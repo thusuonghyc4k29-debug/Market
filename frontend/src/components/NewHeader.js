@@ -25,9 +25,8 @@ const NewHeader = () => {
   const { favorites } = useFavorites();
   const { comparison } = useComparison();
   const { openCatalog } = useCatalog();
-  const { language, changeLanguage, t } = useLanguage();
+  const { t } = useLanguage();
   const { hasUnreadNotifications } = useNotifications();
-  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const cartItemsCount = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
@@ -37,15 +36,6 @@ const NewHeader = () => {
   const handleLogout = () => {
     logout();
     navigate('/');
-  };
-
-  const toggleLanguageDropdown = () => {
-    setShowLanguageDropdown(!showLanguageDropdown);
-  };
-
-  const selectLanguage = (lang) => {
-    changeLanguage(lang);
-    setShowLanguageDropdown(false);
   };
 
   return (
@@ -119,7 +109,7 @@ const NewHeader = () => {
             <Link
               to="/favorites"
               className="flex items-center gap-1 md:gap-2 text-black hover:text-pink-600 transition-all duration-300 hover:scale-110 active:scale-95 p-2 hover:bg-pink-50 rounded-2xl"
-              title={t('language') === 'ru' ? 'Избранное' : 'Обране'}
+              title="Обране"
             >
               <div className="relative">
                 <Heart className={`w-5 h-5 md:w-6 md:h-6 ${favoritesCount > 0 ? 'fill-pink-500 text-pink-500' : ''}`} />
@@ -127,14 +117,14 @@ const NewHeader = () => {
                   {favoritesCount}
                 </span>
               </div>
-              <span className="hidden lg:inline text-sm">{t('language') === 'ru' ? 'Избранное' : 'Обране'}</span>
+              <span className="hidden lg:inline text-sm">Обране</span>
             </Link>
 
             {/* Comparison */}
             <Link
               to="/comparison"
               className="flex items-center gap-1 md:gap-2 text-black hover:text-blue-600 transition-all duration-300 hover:scale-110 active:scale-95 p-2 hover:bg-blue-50 rounded-2xl"
-              title={t('language') === 'ru' ? 'Сравнение' : 'Порівняння'}
+              title="Порівняння"
             >
               <div className="relative">
                 <GitCompare className="w-5 h-5 md:w-6 md:h-6" />
@@ -142,7 +132,7 @@ const NewHeader = () => {
                   {comparisonCount}
                 </span>
               </div>
-              <span className="hidden lg:inline text-sm">{t('language') === 'ru' ? 'Сравнение' : 'Порівняння'}</span>
+              <span className="hidden lg:inline text-sm">Порівняння</span>
             </Link>
 
             {/* Cart */}
@@ -211,42 +201,8 @@ const NewHeader = () => {
               </Link>
             </div>
 
-            {/* Right Side - Language and Login */}
+            {/* Right Side - Login */}
             <div className="flex items-center gap-2 md:gap-4 relative">
-              <div className="relative">
-                <button
-                  onClick={toggleLanguageDropdown}
-                  className="flex items-center gap-1 hover:text-gray-300 transition-colors text-sm md:text-base"
-                >
-                  🌐 <span className="hidden sm:inline">{language === 'ru' ? 'RU' : 'UA'}</span>
-                </button>
-                
-                {/* Language Dropdown */}
-                {showLanguageDropdown && (
-                  <>
-                    {/* Backdrop to close on click outside */}
-                    <div 
-                      className="fixed inset-0 z-[60]" 
-                      onClick={() => setShowLanguageDropdown(false)}
-                    />
-                    <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-2xl py-2 min-w-[140px] z-[70] border border-gray-200">
-                      <button
-                        onClick={() => selectLanguage('ru')}
-                        className="w-full px-4 py-2 text-left text-black hover:bg-gray-100 flex items-center gap-2 text-sm"
-                      >
-                        🇷🇺 Русский
-                      </button>
-                      <button
-                        onClick={() => selectLanguage('ua')}
-                        className="w-full px-4 py-2 text-left text-black hover:bg-gray-100 flex items-center gap-2 text-sm"
-                      >
-                        🇺🇦 Українська
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-
               {user ? (
                 <div className="flex items-center gap-2 md:gap-4">
                   <Link 

@@ -1,15 +1,13 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import ukTranslations from '../i18n/uk.json';
-import ruTranslations from '../i18n/ru.json';
 import { translations as flatTranslations } from '../i18n/translations';
 
 const LanguageContext = createContext();
 
-// Deep nested translations (from JSON files)
+// Only Ukrainian translations
 const nestedTranslations = {
   uk: ukTranslations,
-  ua: ukTranslations, // alias
-  ru: ruTranslations
+  ua: ukTranslations
 };
 
 export const useLanguage = () => {
@@ -21,33 +19,17 @@ export const useLanguage = () => {
 };
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('ua');
+  // Always Ukrainian - no language switching
+  const [language] = useState('ua');
 
-  useEffect(() => {
-    const savedLang = localStorage.getItem('language');
-    if (savedLang && ['ru', 'ua', 'uk'].includes(savedLang)) {
-      setLanguage(savedLang === 'uk' ? 'ua' : savedLang);
-    } else {
-      setLanguage('ua');
-      localStorage.setItem('language', 'ua');
-    }
-  }, []);
-
-  const changeLanguage = (lang) => {
-    const normalizedLang = lang === 'uk' ? 'ua' : lang;
-    setLanguage(normalizedLang);
-    localStorage.setItem('language', normalizedLang);
-  };
+  // No-op for compatibility
+  const changeLanguage = () => {};
 
   /**
    * Translation function supporting both flat and nested keys
-   * Examples:
-   *   t('login') - flat key from translations.js
-   *   t('home.dealOfDay') - nested key from uk.json/ru.json
-   *   t('common.search') - nested key
    */
   const t = useCallback((key, params = {}) => {
-    // First try nested translations (uk.json/ru.json)
+    // First try nested translations (uk.json)
     if (key.includes('.')) {
       const keys = key.split('.');
       let value = nestedTranslations[language];
@@ -62,7 +44,6 @@ export const LanguageProvider = ({ children }) => {
       }
       
       if (typeof value === 'string') {
-        // Replace params like {count}, {name}
         return Object.entries(params).reduce(
           (str, [paramKey, paramValue]) => str.replace(new RegExp(`{${paramKey}}`, 'g'), paramValue),
           value
@@ -70,7 +51,7 @@ export const LanguageProvider = ({ children }) => {
       }
     }
     
-    // Try flat translations (translations.js)
+    // Try flat translations
     const flatValue = flatTranslations[language]?.[key];
     if (flatValue) {
       return Object.entries(params).reduce(
@@ -85,7 +66,6 @@ export const LanguageProvider = ({ children }) => {
 
   /**
    * Get all translations for a namespace
-   * Example: tNs('home') returns {dealOfDay: '...', popularCategories: '...', ...}
    */
   const tNs = useCallback((namespace) => {
     return nestedTranslations[language]?.[namespace] || {};
@@ -96,10 +76,9 @@ export const LanguageProvider = ({ children }) => {
     changeLanguage,
     t,
     tNs,
-    // Available languages
+    // Only Ukrainian
     languages: [
-      { code: 'ua', name: 'Українська', flag: '🇺🇦' },
-      { code: 'ru', name: 'Русский', flag: '🇷🇺' }
+      { code: 'ua', name: 'Українська', flag: '🇺🇦' }
     ]
   };
 
