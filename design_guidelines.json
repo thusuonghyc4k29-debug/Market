@@ -1,0 +1,120 @@
+{
+  "identity": {
+    "name": "Y-Store Mobile Refinement",
+    "tone": "Premium Tech, Minimalist, High-Performance",
+    "core_principles": [
+      "Mobile-First Ergonomics: Thumb-friendly zones.",
+      "Horizontal over Vertical: Reduce scroll fatigue with sliders.",
+      "Density with Clarity: Compact cards but high readability.",
+      "Visual Feedback: Micro-interactions for every touch.",
+      "Speed Perception: Skeleton loaders and instant transitions."
+    ]
+  },
+  "typography": {
+    "primary_font": "Manrope",
+    "secondary_font": "Inter",
+    "scale": {
+      "h1": "text-2xl font-bold tracking-tight",
+      "h2": "text-xl font-bold tracking-tight",
+      "h3": "text-lg font-semibold",
+      "body": "text-sm leading-relaxed",
+      "caption": "text-xs text-muted-foreground",
+      "price": "text-base font-bold text-foreground"
+    }
+  },
+  "colors": {
+    "palette_ref": "Use existing Tailwind CSS variables (hsl)",
+    "usage": {
+      "background": "bg-background",
+      "surface": "bg-card",
+      "surface_secondary": "bg-secondary/50",
+      "primary": "bg-primary text-primary-foreground",
+      "text_primary": "text-foreground",
+      "text_secondary": "text-muted-foreground",
+      "border": "border-border",
+      "accent": "text-accent-foreground bg-accent"
+    },
+    "rules": [
+      "High Contrast: Ensure text passes APCA checks.",
+      "No Gradients on Text: Keep text solid for readability.",
+      "Glassmorphism: Use 'backdrop-blur-md bg-white/80 dark:bg-black/80' for sticky headers/navs."
+    ]
+  },
+  "layout_strategy": {
+    "mobile_grid": "grid-cols-2 gap-3",
+    "container": "w-full px-4 md:container md:mx-auto",
+    "spacing": {
+      "section_gap": "py-6",
+      "element_gap": "gap-3",
+      "touch_target": "min-h-[44px] min-w-[44px]"
+    },
+    "patterns": {
+      "horizontal_scroll": "flex overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 gap-4",
+      "card_stack": "flex flex-col gap-3",
+      "bottom_sheet": "fixed bottom-0 left-0 right-0 bg-background rounded-t-xl shadow-lg transform transition-transform"
+    }
+  },
+  "components": {
+    "ProductCard": {
+      "path": "/app/frontend/src/components/ProductCard.jsx",
+      "style": "compact_mobile",
+      "structure": [
+        "Container: aspect-[3/5] or aspect-[2/3] flex flex-col bg-card rounded-lg overflow-hidden border border-border/50 shadow-sm",
+        "Image: aspect-square object-contain p-2 bg-white",
+        "Content: p-2 flex flex-col gap-1 flex-1",
+        "Title: text-xs font-medium line-clamp-2 h-[2.5em]",
+        "Price: text-sm font-bold text-primary mt-auto",
+        "Action: Absolute 'Add' button or small icon button bottom-right"
+      ]
+    },
+    "CategorySlider": {
+      "style": "horizontal_pills_or_circles",
+      "structure": "flex gap-4 overflow-x-auto py-2",
+      "item": "flex flex-col items-center gap-2 w-16 shrink-0",
+      "icon": "w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-xl",
+      "label": "text-xs text-center font-medium truncate w-full"
+    },
+    "SectionHeader": {
+      "structure": "flex items-center justify-between mb-3 px-1",
+      "title": "text-lg font-bold",
+      "action": "text-sm text-primary font-medium flex items-center gap-1"
+    },
+    "BottomNavigation": {
+      "structure": "fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur border-t h-16 flex items-center justify-around z-50 safe-area-bottom",
+      "item": "flex flex-col items-center gap-1 text-xs font-medium text-muted-foreground aria-[current=page]:text-primary"
+    },
+    "HeroBanner": {
+      "structure": "w-full aspect-[4/3] or aspect-[16/9] rounded-xl overflow-hidden relative",
+      "content": "absolute bottom-4 left-4 right-4 text-white"
+    }
+  },
+  "visual_enhancers": {
+    "shadows": "shadow-sm hover:shadow-md transition-shadow",
+    "rounded": "rounded-lg or rounded-xl for cards, rounded-full for buttons",
+    "icons": "Lucide React (stroke-width=1.5)",
+    "micro_interactions": "active:scale-95 transition-transform duration-100"
+  },
+  "image_urls": {
+    "hero_banners": [
+      "https://images.unsplash.com/photo-1763634706732-d8e54d9852de?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2ODh8MHwxfHNlYXJjaHw0fHxlbGVjdHJvbmljcyUyMHN0b3JlJTIwaW50ZXJpb3IlMjBtb2Rlcm58ZW58MHx8fHwxNzcyNTQyNjkzfDA&ixlib=rb-4.1.0&q=85",
+      "https://images.unsplash.com/photo-1770488141886-5ca6b6f54272?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2ODh8MHwxfHNlYXJjaHwxfHxlbGVjdHJvbmljcyUyMHN0b3JlJTIwaW50ZXJpb3IlMjBtb2Rlcm58ZW58MHx8fHwxNzcyNTQyNjkzfDA&ixlib=rb-4.1.0&q=85"
+    ],
+    "categories": [
+      { "name": "Phones", "url": "https://images.unsplash.com/photo-1609686299357-cebcd23192cb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHw0fHxpcGhvbmUlMjBtaW5pbWFsaXN0fGVufDB8fHx8MTc3MjU0MjY5Mnww&ixlib=rb-4.1.0&q=85" },
+      { "name": "Laptops", "url": "https://images.unsplash.com/photo-1623177578400-52c7f7113539?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1OTV8MHwxfHNlYXJjaHwxfHxtYWNib29rJTIwYWlyJTIwbTMlMjBtaW5pbWFsaXN0JTIwd29ya3NwYWNlfGVufDB8fHx8MTc3MjU0MjY4MXww&ixlib=rb-4.1.0&q=85" },
+      { "name": "Audio", "url": "https://images.unsplash.com/photo-1598900863662-da1c3e6dd9d9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjh8MHwxfHNlYXJjaHwxfHxzb255JTIwaGVhZHBob25lcyUyMG1pbmltYWxpc3R8ZW58MHx8fHwxNzcyNTQyNjgyfDA&ixlib=rb-4.1.0&q=85" }
+    ],
+    "placeholders": {
+      "product": "https://placehold.co/300x300/f3f4f6/1f2937?text=Product",
+      "banner": "https://placehold.co/800x400/10b981/ffffff?text=Promo"
+    }
+  },
+  "universal_guidelines": [
+    "Do not break desktop functionality. Use 'md:hidden' for mobile-only elements and 'hidden md:block' for desktop-only.",
+    "Ensure all touch targets are at least 44x44px.",
+    "Use 'truncate' for text that might overflow on small screens.",
+    "Implement 'data-testid' for all interactive elements.",
+    "Prefer CSS scroll-snap for sliders over heavy JS libraries where possible."
+  ],
+  "instructions_to_main_agent": "Focus heavily on the 'Catalog' and 'Home' pages. Implement the horizontal sliders using the Shadcn Carousel or a simple flex container with snap classes. Redesign the Product Card to be highly compact for the mobile grid (2 columns). Add a sticky bottom navigation bar for mobile users. Ensure the header is sticky and minimal on mobile."
+}
