@@ -161,21 +161,20 @@ const NewHeader = () => {
       {/* Dark Navigation Bar - BLACK */}
       <div className="bg-black text-white">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between py-3 md:py-4">
-            {/* Left - Catalog button */}
-            <div className="flex items-center flex-shrink-0">
-              <button
-                onClick={openCatalog}
-                className="flex items-center gap-2 bg-gray-800 text-white px-4 md:px-6 py-2 rounded-full hover:bg-gray-700 transition-colors font-medium text-sm md:text-base"
-              >
-                <Menu className="w-4 h-4" />
-                <span className="hidden sm:inline">{t('catalog')}</span>
-                <span className="sm:hidden">Меню</span>
-              </button>
-            </div>
+          {/* All navigation centered */}
+          <div className="flex items-center justify-center gap-4 xl:gap-8 py-3 md:py-4">
+            {/* Catalog button */}
+            <button
+              onClick={openCatalog}
+              className="flex items-center gap-2 bg-blue-600 text-white px-4 md:px-6 py-2 rounded-full hover:bg-blue-700 transition-colors font-medium text-sm md:text-base"
+            >
+              <Menu className="w-4 h-4" />
+              <span className="hidden sm:inline">{t('catalog')}</span>
+              <span className="sm:hidden">Меню</span>
+            </button>
             
-            {/* Center Navigation - Absolutely centered */}
-            <div className="hidden lg:flex items-center justify-center gap-4 xl:gap-8 text-sm xl:text-base flex-1">
+            {/* Navigation Links - centered with catalog */}
+            <div className="hidden lg:flex items-center gap-4 xl:gap-8 text-sm xl:text-base">
               <Link to="/contact" className="hover:text-gray-300 transition-colors whitespace-nowrap">
                 {t('contactInfo')}
               </Link>
@@ -196,32 +195,9 @@ const NewHeader = () => {
                 {t('agreement')}
               </Link>
               
-              <Link to="/promotions" className="hover:text-gray-300 transition-colors whitespace-nowrap">
+              <Link to="/promotions" className="text-red-400 hover:text-red-300 transition-colors whitespace-nowrap font-medium">
                 Акції
               </Link>
-            </div>
-
-            {/* Right Side - Login */}
-            <div className="flex items-center gap-2 md:gap-4 relative flex-shrink-0">
-              {user ? (
-                <div className="flex items-center gap-2 md:gap-4">
-                  <Link 
-                    to={user.role === 'admin' ? '/admin' : user.role === 'seller' ? '/seller/dashboard' : '/profile'} 
-                    className="hover:text-gray-300 flex items-center gap-1"
-                  >
-                    <User className="w-4 h-4" />
-                    <span className="hidden md:inline truncate max-w-[120px]\">{user.full_name || user.email}</span>
-                  </Link>
-                  <button onClick={handleLogout} className="hover:text-gray-300 p-1">
-                    <LogOut className="w-4 h-4" />
-                  </button>
-                </div>
-              ) : (
-                <Link to="/login" className="flex items-center gap-1 hover:text-gray-300 transition-colors">
-                  <User className="w-4 h-4" />
-                  <span className="hidden sm:inline">{t('login')}</span>
-                </Link>
-              )}
             </div>
           </div>
         </div>
