@@ -1,52 +1,38 @@
 # Y-Store Marketplace - PRD
 
 ## Дата: 2026-03-03
-## Статус: Развёрнуто и работает
+## Статус: ✅ Полностью развёрнуто и работает
 
 ---
 
-## Оригинальная задача
-Клонировать репозиторий Y-Store с GitHub (https://github.com/svetlanaslinko057/rtyui765432), поднять фронтенд, бэкенд и MongoDB. Изучить аудит админки и подготовиться к рефакторингу.
+## Все интеграции работают
+
+| Интеграция | Статус | Детали |
+|------------|--------|--------|
+| Telegram Bot | ✅ | @YStore_a_bot - polling запущен |
+| Нова Пошта | ✅ | Поиск городов и отделений работает |
+| WayForPay | ✅ | Checkout URL генерируется |
+| MongoDB | ✅ | 8 категорий, 40 товаров |
+| JWT Auth | ✅ | admin@ystore.ua / admin123 |
 
 ---
 
-## Архитектура
+## Ключи API (настроены в .env)
 
-### Tech Stack
-- **Frontend**: React 19, TailwindCSS, Radix UI, React Router 7
-- **Backend**: FastAPI, Python 3.11, Motor (async MongoDB)
-- **Database**: MongoDB (test_database)
-- **Auth**: JWT tokens
-
-### Интеграции (ключи настроены)
-- Telegram Bot: 239151803:AAFBBufl...
-- Нова Пошта: 5cb1e3ebc23e75d737fd57c1e056ecc9
-- WayForPay: merchant + secret key
+```
+TELEGRAM_BOT_TOKEN=8239151803:AAFBBufl...
+NOVAPOSHTA_API_KEY=5cb1e3ebc23e75d737fd57c1e056ecc9
+WAYFORPAY_MERCHANT_ACCOUNT=a6fcf5fe2a413bdd25bb8b2e7100663a
+WAYFORPAY_MERCHANT_SECRET=4f27e43c7052...
+```
 
 ---
 
-## Что реализовано
+## URLs
 
-### 1. Развёртывание приложения ✅
-- Клонирован репозиторий с GitHub
-- Настроены переменные окружения (.env)
-- Установлены зависимости (pip, yarn)
-- Запущены frontend и backend через supervisor
-
-### 2. База данных MongoDB ✅
-- 8 категорий товаров
-- 40 товаров
-- Коллекции: products, categories, orders, users, etc.
-
-### 3. Авторизация ✅
-- JWT токены работают
-- Admin user создан: admin@ystore.ua / admin123
-- Роль admin в коллекции users
-
-### 4. Админ-панель ✅
-- AdminPanelRefactored.js - рефакторенная версия (7 модулей)
-- Модули: Дашборд, Каталог, Замовлення, CRM, Маркетинг, Фінанси, Налаштування
-- Lazy loading компонентов
+- **Сайт**: https://monogp-dev-deploy.preview.emergentagent.com
+- **Админка**: https://monogp-dev-deploy.preview.emergentagent.com/admin
+- **Telegram**: @YStore_a_bot
 
 ---
 
@@ -58,56 +44,30 @@
 
 ---
 
-## URLs
+## Запуск бота
 
-- Frontend: https://monogp-dev-deploy.preview.emergentagent.com
-- Backend API: https://monogp-dev-deploy.preview.emergentagent.com/api
-- Admin Panel: https://monogp-dev-deploy.preview.emergentagent.com/admin
+```bash
+cd /app/backend && ./start_bot.sh
+# или
+cd /app/backend && python -m modules.bot.bot_app
+```
 
----
-
-## Аудит админки (из AUDIT_REPORT.md)
-
-### Критические проблемы из предыдущего аудита
-1. ✅ Дубли моделей в server.py - lint проходит без ошибок
-2. ❓ "Хвосты" кода вне классов - требует проверки
-3. ✅ Старые версии админки удалены (AdminPanel.js, AdminPanelV2.js)
-4. ❓ Папка /admin2/ - требует проверки
-
-### План исправлений по аудиту
-- [ ] Этап 1: Backend cleanup - удалить дубли, хвосты кода
-- [ ] Этап 2: Frontend cleanup - проверить неиспользуемые компоненты
-- [ ] Этап 3: Code review - полный lint и тестирование
+Логи: `tail -f /var/log/telegram_bot.log`
 
 ---
 
-## Backlog
+## Аудит админки (pending)
 
-### P0 - Done
-- [x] Клонировать и развернуть приложение
-- [x] Настроить MongoDB
-- [x] Создать admin пользователя
-- [x] Проверить работу админ-панели
-
-### P1 - Pending (Рефакторинг по аудиту)
-- [ ] Удалить дубли моделей в server.py
-- [ ] Удалить хвосты кода
-- [ ] Проверить и удалить /components/admin2/
+Из AUDIT_REPORT.md - план исправлений:
+- [ ] Проверить дубли моделей в server.py
 - [ ] Удалить неиспользуемые компоненты
-
-### P2 - Future
-- [ ] Email-уведомления
-- [ ] Bulk редактирование
-- [ ] Оптимизация производительности
+- [ ] Полный code review
 
 ---
 
-## API Ключи (настроены в .env)
+## Tech Stack
 
-```
-TELEGRAM_BOT_TOKEN=239151803:AAFBBufl...
-NOVA_POSHTA_API_KEY=5cb1e3ebc...
-WAYFORPAY_SECRET_KEY=4f27e43c7052...
-WAYFORPAY_MERCHANT_ACCOUNT=a6fcf5fe2a...
-JWT_SECRET_KEY=supersecret_jwt_key_y_store_2026
-```
+- **Frontend**: React 19, TailwindCSS, Radix UI
+- **Backend**: FastAPI, Python 3.11, Motor
+- **Database**: MongoDB
+- **Bot**: aiogram 3.x
