@@ -104,18 +104,18 @@ const Testimonials = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/reviews/featured?limit=4`);
+        const res = await fetch(`${API_URL}/api/reviews/featured?limit=6`);
         if (res.ok) {
           const data = await res.json();
           if (data.length > 0) {
             const mapped = data.map(r => ({
               name: r.user_name || r.author || 'Покупець',
               rating: r.rating || 5,
-              text: r.text || r.comment || r.review,
+              text: r.comment || r.text || r.review || '',
               date: formatDate(r.created_at, language),
               product: r.product_name || r.product?.name || '',
               avatar: (r.user_name || 'П').charAt(0).toUpperCase(),
-              helpful: r.helpful_count || Math.floor(Math.random() * 30) + 5
+              helpful: r.likes || r.helpful_count || 0
             }));
             if (mapped.length > 0) setTestimonials(mapped);
           }

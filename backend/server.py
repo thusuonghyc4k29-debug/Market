@@ -292,6 +292,8 @@ class ReviewWithProduct(BaseModel):
     rating: int
     comment: str
     created_at: datetime
+    featured: bool = False
+    likes: int = 0
 
 class CartItem(BaseModel):
     product_id: str
@@ -2147,7 +2149,9 @@ async def get_all_reviews_admin(current_user: User = Depends(get_current_admin))
                 user_email=user_email,
                 rating=review["rating"],
                 comment=review["comment"],
-                created_at=created_at
+                created_at=created_at,
+                featured=review.get("featured", False),
+                likes=review.get("likes", 0)
             )
             enriched_reviews.append(enriched_review)
         
@@ -2206,6 +2210,80 @@ async def toggle_review_featured(
     }
 
 
+class AdminReviewCreate(BaseModel):
+    """Model for creating review from admin panel"""
+    product_id: str
+    user_name: str
+    rating: int = Field(ge=1, le=5)
+    comment: str
+    featured: bool = True
+    likes: int = 0
+
+
+@api_router.post("/admin/reviews")
+async def create_review_admin(
+    review_data: AdminReviewCreate,
+    current_user: User = Depends(get_current_admin)
+):
+    """
+    Create a new review from admin panel (for showcasing on homepage)
+    """
+    # Verify product exists
+    product = await db.products.find_one({"id": review_data.product_id})
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    review_doc = {
+        "id": str(uuid.uuid4()),
+        "product_id": review_data.product_id,
+        "user_id": f"admin-created-{current_user.id}",
+        "user_name": review_data.user_name,
+        "rating": review_data.rating,
+        "comment": review_data.comment,
+        "featured": review_data.featured,
+        "likes": review_data.likes,
+        "verified_purchase": True,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "created_by_admin": True
+    }
+    
+    await db.reviews.insert_one(review_doc)
+    
+    return {
+        "message": "Review created successfully",
+        "id": review_doc["id"],
+        "featured": review_data.featured
+    }
+
+
+@api_router.put("/admin/reviews/{review_id}")
+async def update_review_admin(
+    review_id: str,
+    review_data: AdminReviewCreate,
+    current_user: User = Depends(get_current_admin)
+):
+    """
+    Update an existing review from admin panel
+    """
+    review = await db.reviews.find_one({"id": review_id})
+    if not review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    
+    update_doc = {
+        "product_id": review_data.product_id,
+        "user_name": review_data.user_name,
+        "rating": review_data.rating,
+        "comment": review_data.comment,
+        "featured": review_data.featured,
+        "likes": review_data.likes,
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.reviews.update_one({"id": review_id}, {"$set": update_doc})
+    
+    return {"message": "Review updated successfully", "id": review_id}
+
+
 @api_router.get("/reviews/featured", response_model=List[ReviewWithProduct])
 async def get_featured_reviews():
     """
@@ -2241,7 +2319,9 @@ async def get_featured_reviews():
                 user_email=user_email,
                 rating=review["rating"],
                 comment=review["comment"],
-                created_at=created_at
+                created_at=created_at,
+                featured=review.get("featured", False),
+                likes=review.get("likes", 0)
             )
             enriched_reviews.append(enriched_review)
         
