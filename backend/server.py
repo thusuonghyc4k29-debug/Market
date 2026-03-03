@@ -4070,7 +4070,7 @@ app.include_router(retry_router)
 app.include_router(recovery_router)
 app.include_router(recon_router)
 app.include_router(fondy_router)
-app.include_router(wayforpay_router)
+app.include_router(wayforpay_router, prefix="/api")
 app.include_router(payment_health_router, prefix="/api/v2/admin", tags=["Payment Health Dashboard"])
 
 # Risk routes also on /api for frontend compatibility
