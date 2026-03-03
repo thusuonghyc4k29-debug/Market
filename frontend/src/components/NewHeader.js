@@ -160,46 +160,40 @@ const NewHeader = () => {
 
       {/* Dark Navigation Bar - BLACK */}
       <div className="bg-black text-white">
-        <div className="container mx-auto px-4">
-          {/* All navigation centered */}
-          <div className="flex items-center justify-center gap-4 xl:gap-8 py-3 md:py-4">
+        <div className="w-full">
+          {/* Navigation centered in full width */}
+          <nav className="flex items-center justify-center gap-4 xl:gap-8 py-3 md:py-4 text-sm xl:text-base">
             {/* Catalog button */}
             <button
               onClick={openCatalog}
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 md:px-6 py-2 rounded-full hover:bg-blue-700 transition-colors font-medium text-sm md:text-base"
+              className="flex items-center gap-2 bg-blue-600 text-white px-4 md:px-6 py-2 rounded-full hover:bg-blue-700 transition-colors font-medium"
             >
               <Menu className="w-4 h-4" />
               <span className="hidden sm:inline">{t('catalog')}</span>
               <span className="sm:hidden">Меню</span>
             </button>
             
-            {/* Navigation Links - centered with catalog */}
-            <div className="hidden lg:flex items-center gap-4 xl:gap-8 text-sm xl:text-base">
-              <Link to="/contact" className="hover:text-gray-300 transition-colors whitespace-nowrap">
-                {t('contactInfo')}
-              </Link>
-              
-              <Link to="/delivery-payment" className="hover:text-gray-300 transition-colors whitespace-nowrap">
-                {t('deliveryPayment')}
-              </Link>
-              
-              <Link to="/exchange-return" className="hover:text-gray-300 transition-colors whitespace-nowrap">
-                {t('exchangeReturn')}
-              </Link>
-              
-              <Link to="/about" className="hover:text-gray-300 transition-colors whitespace-nowrap">
-                {t('aboutUs')}
-              </Link>
-              
-              <Link to="/terms" className="hover:text-gray-300 transition-colors whitespace-nowrap">
-                {t('agreement')}
-              </Link>
-              
-              <Link to="/promotions" className="text-red-400 hover:text-red-300 transition-colors whitespace-nowrap font-medium">
-                Акції
-              </Link>
-            </div>
-          </div>
+            {/* Navigation Links */}
+            <Link to="/contact" className="hidden lg:block hover:text-gray-300 transition-colors whitespace-nowrap">
+              {t('contactInfo')}
+            </Link>
+            
+            <Link to="/delivery-payment" className="hidden lg:block hover:text-gray-300 transition-colors whitespace-nowrap">
+              {t('deliveryPayment')}
+            </Link>
+            
+            <Link to="/exchange-return" className="hidden lg:block hover:text-gray-300 transition-colors whitespace-nowrap">
+              {t('exchangeReturn')}
+            </Link>
+            
+            <Link to="/about" className="hidden lg:block hover:text-gray-300 transition-colors whitespace-nowrap">
+              {t('aboutUs')}
+            </Link>
+            
+            <Link to="/promotions" className="hidden lg:block text-red-400 hover:text-red-300 transition-colors whitespace-nowrap font-medium">
+              Акції
+            </Link>
+          </nav>
         </div>
       </div>
     </header>
