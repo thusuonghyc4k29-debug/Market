@@ -39,3 +39,23 @@
 ```bash
 cd /app/backend && python -m modules.bot.bot_app
 ```
+
+---
+
+## Обновление 2026-03-03: Подписка и Callback
+
+### Newsletter (Подписка на рассылку)
+- **Endpoint**: `POST /api/newsletter/subscribe`
+- Сохраняется в коллекцию `newsletter_subscribers`
+- Отправляет уведомление в Telegram админам
+- UI: NewsletterBlock.jsx на главной странице
+
+### Callback (Замовити дзвінок)
+- **Endpoint**: `POST /api/contact/callback`
+- Сохраняется в коллекцию `callbacks`
+- Отправляет уведомление в Telegram админам
+- UI: Footer.js - форма "Замовити дзвінок"
+
+### Telegram уведомления
+- Отправляются всем админам из `bot_settings.admin_chat_ids`
+- Текущий admin_chat_id: 577782582

@@ -14,6 +14,7 @@ from datetime import datetime, timezone, timedelta
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 import asyncio
+import httpx
 from crm_service import CRMService
 
 ROOT_DIR = Path(__file__).parent
@@ -32,6 +33,51 @@ security = HTTPBearer()
 JWT_SECRET = os.environ.get('JWT_SECRET_KEY')
 JWT_ALGORITHM = os.environ.get('JWT_ALGORITHM', 'HS256')
 JWT_EXPIRATION = int(os.environ.get('JWT_EXPIRATION_MINUTES', 10080))
+
+# Telegram Bot Configuration
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
+SUPPORT_EMAIL = os.environ.get('SUPPORT_EMAIL', 'support@y-store.in.ua')
+
+async def send_telegram_notification(message: str):
+    """Send notification to Telegram bot admin channel"""
+    if not TELEGRAM_BOT_TOKEN:
+        logger.warning("TELEGRAM_BOT_TOKEN not set, skipping notification")
+        return False
+    
+    try:
+        # Get admin chat IDs from bot_settings
+        settings = await db.bot_settings.find_one({"setting_type": "admin_chat_ids"})
+        admin_chat_ids = settings.get("chat_ids", []) if settings else []
+        
+        # Fallback: check bot_sessions for active admins
+        if not admin_chat_ids:
+            sessions = await db.bot_sessions.find({}).to_list(100)
+            admin_chat_ids = list(set([s.get("user_id") for s in sessions if s.get("user_id")]))
+        
+        if not admin_chat_ids:
+            logger.warning("No admin chat IDs found for Telegram notification")
+            return False
+        
+        async with httpx.AsyncClient() as client:
+            for chat_id in admin_chat_ids:
+                try:
+                    response = await client.post(
+                        f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage",
+                        json={
+                            "chat_id": chat_id,
+                            "text": message,
+                            "parse_mode": "HTML"
+                        },
+                        timeout=10.0
+                    )
+                    if response.status_code == 200:
+                        logger.info(f"Telegram notification sent to {chat_id}")
+                except Exception as e:
+                    logger.error(f"Failed to send to chat_id {chat_id}: {e}")
+        return True
+    except Exception as e:
+        logger.error(f"Telegram notification error: {e}")
+        return False
 
 # Create the main app
 app = FastAPI(title="Global Marketplace API")
@@ -2705,8 +2751,39 @@ async def track_analytics_event(event: AnalyticsEvent):
 
 # ============= CONTACT & SUPPORT =============
 
+class NewsletterRequest(BaseModel):
+    email: EmailStr
+
+@api_router.post("/newsletter/subscribe")
+async def subscribe_newsletter(request: NewsletterRequest, background_tasks: BackgroundTasks):
+    """Subscribe to newsletter"""
+    # Check if already subscribed
+    existing = await db.newsletter_subscribers.find_one({"email": request.email})
+    if existing:
+        return {"message": "Ви вже підписані на розсилку", "already_subscribed": True}
+    
+    # Save subscriber
+    subscriber_doc = {
+        "id": str(uuid.uuid4()),
+        "email": request.email,
+        "subscribed_at": datetime.now(timezone.utc).isoformat(),
+        "status": "active"
+    }
+    await db.newsletter_subscribers.insert_one(subscriber_doc)
+    
+    # Send Telegram notification
+    telegram_message = f"""📧 <b>Нова підписка на розсилку!</b>
+
+Email: {request.email}
+Час: {datetime.now(timezone.utc).strftime('%d.%m.%Y %H:%M')} UTC"""
+    
+    background_tasks.add_task(send_telegram_notification, telegram_message)
+    
+    return {"message": "Дякуємо за підписку! Ви отримаєте -10% на першу покупку", "success": True}
+
 @api_router.post("/contact/callback")
-async def request_callback(request: ContactRequest):
+async def request_callback(request: ContactRequest, background_tasks: BackgroundTasks):
+    """Request callback from support"""
     callback_doc = {
         "id": str(uuid.uuid4()),
         "name": request.name,
@@ -2716,7 +2793,20 @@ async def request_callback(request: ContactRequest):
         "status": "pending"
     }
     await db.callbacks.insert_one(callback_doc)
-    return {"message": "Callback request received. We will contact you soon."}
+    
+    # Send Telegram notification
+    telegram_message = f"""📞 <b>Замовлення зворотнього дзвінка!</b>
+
+👤 Ім'я: {request.name}
+📱 Телефон: {request.phone}
+💬 Повідомлення: {request.message or 'Не вказано'}
+🕐 Час: {datetime.now(timezone.utc).strftime('%d.%m.%Y %H:%M')} UTC
+
+⚡️ Зв'яжіться з клієнтом якнайшвидше!"""
+    
+    background_tasks.add_task(send_telegram_notification, telegram_message)
+    
+    return {"message": "Дякуємо! Ми зв'яжемося з вами найближчим часом.", "success": True}
 
 # ============= ADMIN ENDPOINTS =============
 

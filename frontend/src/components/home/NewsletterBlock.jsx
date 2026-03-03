@@ -1,20 +1,35 @@
 /**
  * BLOCK V2-20: Newsletter Block
- * Email subscription block
+ * Email subscription block with API integration
  */
 import React, { useState } from "react";
-import { Mail, Gift, CheckCircle } from "lucide-react";
+import { Mail, Gift, CheckCircle, Loader2 } from "lucide-react";
+import api from "../../utils/api";
 
 export default function NewsletterBlock() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email) {
-      // Here you would send to API
-      setSubmitted(true);
-      setEmail("");
+    if (!email) return;
+    
+    setLoading(true);
+    setError("");
+    
+    try {
+      const response = await api.post('/newsletter/subscribe', { email });
+      if (response.data.success || response.data.already_subscribed) {
+        setSubmitted(true);
+        setEmail("");
+      }
+    } catch (err) {
+      setError("Щось пішло не так. Спробуйте ще раз.");
+      console.error("Newsletter subscribe error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,16 +67,20 @@ export default function NewsletterBlock() {
                 placeholder="Ваш email"
                 className="w-full pl-12 pr-4 py-3 rounded-xl text-gray-900 focus:ring-2 focus:ring-white/50 outline-none"
                 required
+                disabled={loading}
               />
             </div>
             <button 
               type="submit"
-              className="bg-white text-blue-600 px-6 py-3 rounded-xl font-bold hover:bg-blue-50 transition-all hover:-translate-y-0.5"
+              disabled={loading}
+              className="bg-white text-blue-600 px-6 py-3 rounded-xl font-bold hover:bg-blue-50 transition-all hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2"
             >
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : null}
               Підписатися
             </button>
           </form>
         )}
+        {error && <p className="text-red-300 mt-3">{error}</p>}
       </div>
     </div>
   );
