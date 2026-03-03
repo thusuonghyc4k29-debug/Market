@@ -158,11 +158,10 @@ const NewHeader = () => {
         </div>
       </div>
 
-      {/* Dark Navigation Bar - BLACK */}
-      <div className="bg-black text-white">
-        <div className="w-full">
-          {/* Navigation centered in full width */}
-          <nav className="flex items-center justify-center gap-4 xl:gap-8 py-3 md:py-4 text-sm xl:text-base">
+      {/* Dark Navigation Bar - BLACK - Full screen width centered */}
+      <div className="bg-black text-white relative left-1/2 right-1/2 -mx-[50vw] w-screen">
+        <div className="flex justify-center py-3 md:py-4">
+          <div className="inline-flex items-center gap-6 xl:gap-10 text-sm xl:text-base">
             {/* Catalog button */}
             <button
               onClick={openCatalog}
@@ -174,26 +173,26 @@ const NewHeader = () => {
             </button>
             
             {/* Navigation Links */}
-            <Link to="/contact" className="hidden lg:block hover:text-gray-300 transition-colors whitespace-nowrap">
+            <Link to="/contact" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
               {t('contactInfo')}
             </Link>
             
-            <Link to="/delivery-payment" className="hidden lg:block hover:text-gray-300 transition-colors whitespace-nowrap">
+            <Link to="/delivery-payment" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
               {t('deliveryPayment')}
             </Link>
             
-            <Link to="/exchange-return" className="hidden lg:block hover:text-gray-300 transition-colors whitespace-nowrap">
+            <Link to="/exchange-return" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
               {t('exchangeReturn')}
             </Link>
             
-            <Link to="/about" className="hidden lg:block hover:text-gray-300 transition-colors whitespace-nowrap">
+            <Link to="/about" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
               {t('aboutUs')}
             </Link>
             
-            <Link to="/promotions" className="hidden lg:block text-red-400 hover:text-red-300 transition-colors whitespace-nowrap font-medium">
+            <Link to="/promotions" className="hidden lg:inline-block text-red-400 hover:text-red-300 transition-colors whitespace-nowrap font-medium">
               Акції
             </Link>
-          </nav>
+          </div>
         </div>
       </div>
     </header>
