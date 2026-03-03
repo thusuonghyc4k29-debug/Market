@@ -60,14 +60,14 @@ const CookieBanner = () => {
           <button
             onClick={handleAccept}
             data-testid="cookie-accept-btn"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-lg transition-colors text-sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-6 rounded-full transition-all duration-300 hover:scale-105 text-sm shadow-md"
           >
             Прийняти
           </button>
           <button
             onClick={handleClose}
             data-testid="cookie-close-btn"
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-all duration-300"
             aria-label="Закрити"
           >
             <X className="w-5 h-5" />
