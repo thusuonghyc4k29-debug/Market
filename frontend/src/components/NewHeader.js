@@ -163,7 +163,7 @@ const NewHeader = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between py-3 md:py-4">
             {/* Left - Catalog button */}
-            <div className="flex items-center">
+            <div className="flex items-center flex-shrink-0">
               <button
                 onClick={openCatalog}
                 className="flex items-center gap-2 bg-gray-800 text-white px-4 md:px-6 py-2 rounded-full hover:bg-gray-700 transition-colors font-medium text-sm md:text-base"
@@ -174,8 +174,8 @@ const NewHeader = () => {
               </button>
             </div>
             
-            {/* Center Navigation - Hidden on mobile/tablet, visible on lg+ */}
-            <div className="hidden lg:flex items-center gap-4 xl:gap-8 text-sm xl:text-base">
+            {/* Center Navigation - Absolutely centered */}
+            <div className="hidden lg:flex items-center justify-center gap-4 xl:gap-8 text-sm xl:text-base flex-1">
               <Link to="/contact" className="hover:text-gray-300 transition-colors whitespace-nowrap">
                 {t('contactInfo')}
               </Link>
@@ -202,7 +202,7 @@ const NewHeader = () => {
             </div>
 
             {/* Right Side - Login */}
-            <div className="flex items-center gap-2 md:gap-4 relative">
+            <div className="flex items-center gap-2 md:gap-4 relative flex-shrink-0">
               {user ? (
                 <div className="flex items-center gap-2 md:gap-4">
                   <Link 
