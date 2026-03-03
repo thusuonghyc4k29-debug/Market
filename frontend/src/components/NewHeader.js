@@ -39,7 +39,7 @@ const NewHeader = () => {
   };
 
   return (
-    <header className="bg-white sticky top-0 z-50 shadow-xl backdrop-blur-lg bg-white/95">
+    <header className="bg-white sticky top-0 z-50 shadow-xl backdrop-blur-lg bg-white/95 overflow-visible">
       {/* Mobile Menu */}
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
       
@@ -158,41 +158,50 @@ const NewHeader = () => {
         </div>
       </div>
 
-      {/* Dark Navigation Bar - BLACK - Full screen width centered */}
-      <div className="bg-black text-white relative left-1/2 right-1/2 -mx-[50vw] w-screen">
-        <div className="flex justify-center py-3 md:py-4">
-          <div className="inline-flex items-center gap-6 xl:gap-10 text-sm xl:text-base">
-            {/* Catalog button */}
-            <button
-              onClick={openCatalog}
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 md:px-6 py-2 rounded-full hover:bg-blue-700 transition-colors font-medium"
-            >
-              <Menu className="w-4 h-4" />
-              <span className="hidden sm:inline">{t('catalog')}</span>
-              <span className="sm:hidden">Меню</span>
-            </button>
-            
-            {/* Navigation Links */}
-            <Link to="/contact" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
-              {t('contactInfo')}
-            </Link>
-            
-            <Link to="/delivery-payment" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
-              {t('deliveryPayment')}
-            </Link>
-            
-            <Link to="/exchange-return" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
-              {t('exchangeReturn')}
-            </Link>
-            
-            <Link to="/about" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
-              {t('aboutUs')}
-            </Link>
-            
-            <Link to="/promotions" className="hidden lg:inline-block text-red-400 hover:text-red-300 transition-colors whitespace-nowrap font-medium">
-              Акції
-            </Link>
-          </div>
+      {/* Dark Navigation Bar - BLACK - Absolutely centered */}
+      <div 
+        data-testid="main-navigation"
+        className="bg-black text-white py-3 md:py-4"
+        style={{
+          position: 'relative',
+          width: '100vw',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          justifyContent: 'center'
+        }}
+      >
+        <div data-testid="nav-links" className="flex items-center gap-6 xl:gap-10 text-sm xl:text-base">
+          {/* Catalog button */}
+          <button
+            onClick={openCatalog}
+            className="flex items-center gap-2 bg-blue-600 text-white px-4 md:px-6 py-2 rounded-full hover:bg-blue-700 transition-colors font-medium"
+          >
+            <Menu className="w-4 h-4" />
+            <span className="hidden sm:inline">{t('catalog')}</span>
+            <span className="sm:hidden">Меню</span>
+          </button>
+          
+          {/* Navigation Links */}
+          <Link to="/contact" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
+            {t('contactInfo')}
+          </Link>
+          
+          <Link to="/delivery-payment" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
+            {t('deliveryPayment')}
+          </Link>
+          
+          <Link to="/exchange-return" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
+            {t('exchangeReturn')}
+          </Link>
+          
+          <Link to="/about" className="hidden lg:inline-block hover:text-gray-300 transition-colors whitespace-nowrap">
+            {t('aboutUs')}
+          </Link>
+          
+          <Link to="/promotions" className="hidden lg:inline-block text-red-400 hover:text-red-300 transition-colors whitespace-nowrap font-medium">
+            Акції
+          </Link>
         </div>
       </div>
     </header>

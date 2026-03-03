@@ -162,26 +162,28 @@ export default function HeaderCore({ hideNavigation = false }) {
           </div>
         </div>
 
-        {/* Bottom Line - Navigation - Dark background */}
+        {/* Bottom Line - Navigation - Dark background - CENTERED */}
         {!hideNavigation && (
           <div className="ys-header-bottom bg-slate-800" style={{ backgroundColor: '#1e293b' }}>
-            <div className="ys-container" style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-              <button 
-                className="ys-header-catalog-btn"
-                onClick={handleCatalogClick}
-                data-testid="catalog-btn"
-              >
-                {showMega ? <X size={20} /> : <Menu size={20} />}
-                Каталог
-              </button>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <button 
+                  className="ys-header-catalog-btn"
+                  onClick={handleCatalogClick}
+                  data-testid="catalog-btn"
+                >
+                  {showMega ? <X size={20} /> : <Menu size={20} />}
+                  Каталог
+                </button>
 
-              <nav className="ys-header-nav">
-                <Link to="/contact" className="ys-header-nav-link text-gray-200 hover:text-white">Контакти</Link>
-                <Link to="/delivery-payment" className="ys-header-nav-link text-gray-200 hover:text-white">Доставка і оплата</Link>
-                <Link to="/exchange-return" className="ys-header-nav-link text-gray-200 hover:text-white">Обмін і повернення</Link>
-                <Link to="/about" className="ys-header-nav-link text-gray-200 hover:text-white">Про нас</Link>
-                <Link to="/promotions" className="ys-header-nav-link promo text-red-500">Акції</Link>
-              </nav>
+                <nav className="ys-header-nav">
+                  <Link to="/contact" className="ys-header-nav-link text-gray-200 hover:text-white">Контакти</Link>
+                  <Link to="/delivery-payment" className="ys-header-nav-link text-gray-200 hover:text-white">Доставка і оплата</Link>
+                  <Link to="/exchange-return" className="ys-header-nav-link text-gray-200 hover:text-white">Обмін і повернення</Link>
+                  <Link to="/about" className="ys-header-nav-link text-gray-200 hover:text-white">Про нас</Link>
+                  <Link to="/promotions" className="ys-header-nav-link promo text-red-500">Акції</Link>
+                </nav>
+              </div>
             </div>
           </div>
         )}
